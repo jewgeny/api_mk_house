@@ -13,6 +13,9 @@ app.use(cors({
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(bodyParser.json( {limit: '50mb', extended: true}));
 
+app.get('/', function(req, res) {
+    res.sendFile(path.join(__dirname + '/index.html'));
+});
 
 app.post('/', (req, res) => {
     //console.log('Result of body',req.body);
