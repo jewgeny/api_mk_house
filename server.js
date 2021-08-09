@@ -155,6 +155,8 @@ app.post('/', (req, res) => {
 
 });
 
+//to start the server: npm run dev
+
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 })
