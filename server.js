@@ -10,9 +10,10 @@ app.use(cors({origin: PORT}));
 app.use(express.urlencoded({limit: '50mb', extended: true}));
 app.use(express.json( {limit: '50mb', extended: true}));
 
-// app.get('/', function(req, res) {
-//     res.sendFile(path.join(__dirname + '/index.html'));
-// });
+app.get('/', function(req, res) {
+    //res.sendFile(path.join(__dirname+'/index.html'));
+    res.sendFile('index.html');
+});
 
 app.post('/', (req, res) => {
     //console.log('Result of body',req.body);
