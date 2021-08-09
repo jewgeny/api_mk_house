@@ -5,9 +5,7 @@ const cors = require('cors');
 // const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
 
-app.use(cors({
-    origin: `${PORT}`
-}));
+app.use(cors({origin: PORT}));
 
 app.use(express.urlencoded({limit: '50mb', extended: true}));
 app.use(express.json( {limit: '50mb', extended: true}));
