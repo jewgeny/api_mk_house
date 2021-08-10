@@ -1,7 +1,7 @@
 {
   "name": "api_metalltechnik_kuhn",
   "version": "1.0.0",
-  "description": "",
+  "description": "api_metalltechnik_kuhn",
   "main": "index.js",
   "dependencies": {
     "body-parser": "^1.19.0",
