@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const PORT = process.env.PORT || 5000;
+const port = process.env.PORT || 5000;
 const cors = require('cors');
 require('dotenv').config();
 // const bodyParser = require('body-parser');
@@ -157,6 +157,6 @@ app.use(express.json( {limit: '50mb', extended: true}));
 
 //to start the server: npm run dev
 
-app.listen(PORT, () => {
+app.listen(port, () => {
     console.log(`Server running on port ${PORT}`);
 })
