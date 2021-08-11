@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 5000;
 const cors = require('cors');
+require('dotenv').config();
 // const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
 
@@ -23,8 +24,8 @@ app.post('/', (req, res) => {
         port: 587,
         secure: false,
         auth: {
-          user: 'info@jewgeny.com',
-          pass: 'wtn13041985'
+          user: process.env.USEREMAIL,
+          pass: process.env.USERPASSWORT
         }
     });
 
