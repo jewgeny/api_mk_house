@@ -6,7 +6,7 @@ require('dotenv').config();
 // const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
 
-app.use(cors({origin: PORT}));
+app.use(cors({origin: port}));
 
 app.use(express.urlencoded({limit: '50mb', extended: true}));
 app.use(express.json( {limit: '50mb', extended: true}));
@@ -158,5 +158,5 @@ app.post('/', (req, res) => {
 //to start the server: npm run dev
 
 app.listen(port, () => {
-    console.log(`Server running on port ${PORT}`);
+    console.log(`Server running on port ${port}`);
 })
