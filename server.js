@@ -20,7 +20,7 @@ app.post('/', (req, res) => {
     //console.log('Result of body',req.body);
 
     const smtpTransporter = nodemailer.createTransport({
-        host: 'w00e15db.kasserver.com',
+        host: process.env.HOST,
         port: 587,
         secure: false,
         auth: {
