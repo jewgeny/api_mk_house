@@ -16,7 +16,7 @@ app.get('/', function(req, res) {
     //res.sendFile('index.html');
 });
 
-app.post('/mails', (req, res) => {
+app.post('/', (req, res) => {
     //console.log('Result of body',req.body);
 
     const smtpTransporter = nodemailer.createTransport({
