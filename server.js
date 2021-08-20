@@ -29,7 +29,7 @@ app.post('/', (req, res) => {
         }
     });
 
-    console.log('body', req.body);
+    
       let emailData =
             `
             <p style="text-align:left; font-weight:bold">Infoformation von Interessenten</p>
@@ -55,8 +55,6 @@ app.post('/', (req, res) => {
            <p>${req.body.products}</p>
            `
       ;
-
-      console.log('emailData', emailData);
 
         attachments = [];
         if (req.body.fileNameZaun !== 'null') {
@@ -140,18 +138,18 @@ app.post('/', (req, res) => {
 
       const mailOptions = {
           from: 'Anfrage von Konfigurator',
-          to: 'info@jewgeny.com',
+          to: process.env.USEREMAIL,
           subject: 'Anfrage von Konfigurator',
-          //text: 'Hello world',
           html: emailData,
           attachments: attachments
       }
 
       smtpTransporter.sendMail(mailOptions, (error, info) => {
           if (error) {
+              res.status(500).send('Sorry, es ist ein Fehler aufgetreten! Bitte versuchen sie es erneut.')
               return console.log(error);
           }
-          res.render('Anfrage', {msg: 'Anfrage wurde erfolgreich gesendet'});
+          res.status(200).send('Alles gut gelaufen.');
       })
 
 });
