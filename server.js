@@ -29,6 +29,7 @@ app.post('/', (req, res) => {
         }
     });
 
+    console.log('body', req.body);
       let emailData =
             `
             <p style="text-align:left; font-weight:bold">Infoformation von Interessenten</p>
@@ -138,7 +139,7 @@ app.post('/', (req, res) => {
         }
 
       const mailOptions = {
-          from: '"Anfrage von Konfigurator" <info@jewgeny.com>',
+          from: 'Anfrage von Konfigurator',
           to: 'info@jewgeny.com',
           subject: 'Anfrage von Konfigurator',
           //text: 'Hello world',
