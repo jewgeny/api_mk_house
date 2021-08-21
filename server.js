@@ -32,12 +32,12 @@ app.post('/', (req, res) => {
     //console.log('Result of body',req.body);
 
     const smtpTransporter = nodemailer.createTransport({
-        host: process.env.HOST,
+        host: process.env.HOST_SERVER,
         port: 587,
         secure: false,
         auth: {
-          user: process.env.USEREMAIL,
-          pass: process.env.USERPASSWORT
+          user: process.env.USER_MAIL,
+          pass: process.env.USER_PASSWORT
         }
     });
 
@@ -150,7 +150,7 @@ app.post('/', (req, res) => {
 
       const mailOptions = {
           from: "Anfrage von Konfigurator <info@jewgeny.com>",
-          to: process.env.USEREMAIL,
+          to: process.env.USER_MAIL,
           subject: 'Anfrage von Konfigurator',
           html: emailData,
           attachments: attachments
