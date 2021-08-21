@@ -139,7 +139,7 @@ app.post('/', (req, res) => {
         }
 
       const mailOptions = {
-          from: 'Anfrage von Konfigurator',
+          from: 'Anfrage von Konfigurator" <info@jewgeny.com>',
           to: 'info@jewgeny.com',
           subject: 'Anfrage von Konfigurator',
           //text: 'Hello world',
@@ -148,6 +148,7 @@ app.post('/', (req, res) => {
       }
 
       smtpTransporter.sendMail(mailOptions, (error, info) => {
+
           if (error) {
               return console.log(error);
           }
