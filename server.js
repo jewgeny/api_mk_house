@@ -164,10 +164,8 @@ app.post('/', (req, res) => {
          }else{
             console.log('Message sent: ' + info.response);
             res.status(200).send('Alles gut gelaufen.');
-            res.sendStatus(200);
-            res.status(true);
          };
-         //return res.end();
+         return res.end();
       })
 
 });
