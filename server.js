@@ -3,13 +3,24 @@ const app = express();
 const port = process.env.PORT || 5000;
 const cors = require('cors');
 require('dotenv').config();
-// const bodyParser = require('body-parser');
+//const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
 
 app.use(cors({origin: port}));
 
 app.use(express.urlencoded({limit: '50mb', extended: true}));
-app.use(express.json( {limit: '50mb', extended: true}));
+app.use(express.json({limit: '50mb', extended: true}));
+
+//Add Access Control Allow Origin headers
+app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "http://localhost:3001");
+    res.header(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept"
+    );
+    next();
+  });
+
 
 app.get('/', function(req, res) {
     res.send({msg: 'Hello world!'});
@@ -17,6 +28,7 @@ app.get('/', function(req, res) {
 });
 
 app.post('/', (req, res) => {
+
     //console.log('Result of body',req.body);
 
     const smtpTransporter = nodemailer.createTransport({
@@ -29,7 +41,7 @@ app.post('/', (req, res) => {
         }
     });
 
-    console.log('body', req.body);
+
       let emailData =
             `
             <p style="text-align:left; font-weight:bold">Infoformation von Interessenten</p>
@@ -55,8 +67,6 @@ app.post('/', (req, res) => {
            <p>${req.body.products}</p>
            `
       ;
-
-      console.log('emailData', emailData);
 
         attachments = [];
         if (req.body.fileNameZaun !== 'null') {
@@ -139,20 +149,25 @@ app.post('/', (req, res) => {
         }
 
       const mailOptions = {
-          from: 'Anfrage von Konfigurator" <info@jewgeny.com>',
-          to: 'info@jewgeny.com',
+          from: "Anfrage von Konfigurator <info@jewgeny.com>",
+          to: process.env.USEREMAIL,
           subject: 'Anfrage von Konfigurator',
-          //text: 'Hello world',
           html: emailData,
           attachments: attachments
       }
 
       smtpTransporter.sendMail(mailOptions, (error, info) => {
 
-          if (error) {
-              return console.log(error);
-          }
-          res.render('Anfrage', {msg: 'Anfrage wurde erfolgreich gesendet'});
+        if (error){
+            res.status(500).send('Sorry, es ist ein Fehler aufgetreten! Bitte versuchen sie es erneut.')
+            return console.log(error);
+         }else{
+            console.log('Message sent: ' + info.response);
+            res.status(200).send('Alles gut gelaufen.');
+            res.sendStatus(200);
+            res.status(true);
+         };
+         //return res.end();
       })
 
 });
