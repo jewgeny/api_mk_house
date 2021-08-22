@@ -13,7 +13,7 @@ app.use(express.json({limit: '50mb', extended: true}));
 
 //Add Access Control Allow Origin headers
 app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "https://mk-hausservice.netlify.app");
+    res.setHeader("Access-Control-Allow-Origin", "https://mk-hausservice.netlify.app/");
     res.header(
       "Access-Control-Allow-Headers",
       "Origin, X-Requested-With, Content-Type, Accept"
