@@ -13,7 +13,8 @@ app.use(express.json({limit: '50mb', extended: true}));
 
 //Add Access Control Allow Origin headers
 app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "https://mk-hausservice.netlify.app");
+    // res.setHeader("Access-Control-Allow-Origin", "https://mk-hausservice.netlify.app");
+    res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
     res.header(
       "Access-Control-Allow-Headers",
       "Origin, X-Requested-With, Content-Type, Accept"
@@ -33,12 +34,17 @@ app.post('/', (req, res) => {
 
     const smtpTransporter = nodemailer.createTransport({
         host: process.env.HOST_SERVER,
-        port: 587,
-        secure: false,
+        port: process.env.EMAIL_PORT,
+        tls: {
+            ciphers:'SSLv3',
+            rejectUnauthorized: false
+        },
+        //secure: false,
         auth: {
           user: process.env.USER_MAIL,
           pass: process.env.USER_PASSWORT
         }
+
     });
 
 
@@ -149,7 +155,7 @@ app.post('/', (req, res) => {
         }
 
       const mailOptions = {
-          from: "Anfrage von Konfigurator <info@jewgeny.com>",
+          from: "Anfrage von Konfigurator <jewgeny@gmx.net>",
           to: process.env.USER_MAIL,
           subject: 'Anfrage von Konfigurator',
           html: emailData,
