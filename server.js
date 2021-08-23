@@ -29,7 +29,7 @@ app.get('/', function(req, res) {
 });
 
 app.post('/', (req, res) => {
-
+    let today = new Date().toLocaleDateString();
     //console.log('Result of body',req.body);
 
     const smtpTransporter = nodemailer.createTransport({
@@ -48,7 +48,7 @@ app.post('/', (req, res) => {
     });
 
 
-      let emailData =
+      let emailData_owner =
             `
             <p style="text-align:left; font-weight:bold">Infoformation von Interessenten</p>
                   <ul>
@@ -73,6 +73,27 @@ app.post('/', (req, res) => {
            <p>${req.body.products}</p>
            `
       ;
+
+        let emailData_user =
+            `
+              Sehr ${req.body.gender === 'Frau'? 'geehrte' : 'geehrter'} ${req.body.gender} ${req.body.lastName},</br>
+              vielen Dank für Ihre Anfrage.</br></br>
+              Nach Durchsicht der Unterlagen werden wir uns bei Ihnen melden.</br></br>
+              Viele Grüße</br></br>
+
+              Metalltechnik Kuhn</br>
+              Waldemar Kuhn</br>
+              Kronskamp 127</br>
+              22880 Wedel</br>
+              </br>
+              Telefon: 04103 / 80 85 326</br>
+              Mobil: 0176 / 21 183 725</br>
+              Telefax: 04103 / 18 04 190</br>
+              E-Mail: metalltechnik-kuhn@gmx.de</br>
+              Web: <a href="http://www.metalltechnik-hamburg.de/">www.metalltechnik-hamburg.de</a>
+            `
+        ;
+
 
         attachments = [];
         if (req.body.fileNameZaun !== 'null') {
@@ -154,26 +175,36 @@ app.post('/', (req, res) => {
             })
         }
 
-      const mailOptions = {
-          from: "Anfrage von Konfigurator <jewgeny@gmx.net>",
+      const mailOptions_owner = {
+          from: "Anfrage von Metalltechnik Kuhn - Konfigurator <jewgeny@gmx.net>",
           to: process.env.USER_MAIL,
-          subject: 'Anfrage von Konfigurator',
-          html: emailData,
+          subject: `Anfrage von ${req.body.firstName}`,
+          html: emailData_owner,
           attachments: attachments
       }
 
-      smtpTransporter.sendMail(mailOptions, (error, info) => {
+      const mailOptions_user = {
+        from: "Anfrage von Metalltechnik Kuhn - Konfigurator <jewgeny@gmx.net>",
+        to: req.body.email,
+        subject: `Ihre Anfrage vom ${today}`,
+        html: emailData_user
+        //attachments: attachments
+    }
 
-        if (error){
-            res.status(500).send('Sorry, es ist ein Fehler aufgetreten! Bitte versuchen sie es erneut.')
-            return console.log(error);
-         }else{
-            console.log('Message sent: ' + info.response);
-            res.status(200).send('Alles gut gelaufen.');
-         };
-         return res.end();
-      })
+    let mailOptions = [mailOptions_owner, mailOptions_user];
 
+    for (let i = 0; i < mailOptions.length; i++) {
+        smtpTransporter.sendMail(mailOptions[i], (error, info) => {
+            if (error){
+                res.status(500).send('Sorry, es ist ein Fehler aufgetreten! Bitte versuchen sie es erneut.')
+                return console.log(error);
+            }else{
+                console.log('Message sent: ' + info.response);
+                res.status(200).send('Alles gut gelaufen.');
+            };
+            return res.end();
+        })
+    }
 });
 
 //to start the server: npm run dev
