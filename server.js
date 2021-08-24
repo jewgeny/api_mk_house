@@ -5,6 +5,8 @@ const cors = require('cors');
 require('dotenv').config();
 //const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
+var fs = require('fs');
+const {createPdf} = require(`${__dirname}/createPdf`);
 
 app.use(cors({origin: port}));
 
@@ -30,6 +32,7 @@ app.get('/', function(req, res) {
 
 app.post('/', (req, res) => {
     let today = new Date().toLocaleDateString();
+    createPdf(req.body.products);
     //console.log('Result of body',req.body);
 
     const smtpTransporter = nodemailer.createTransport({
@@ -46,7 +49,6 @@ app.post('/', (req, res) => {
         }
 
     });
-
 
       let emailData_owner =
             `
@@ -70,7 +72,9 @@ app.post('/', (req, res) => {
                 :''
             }
             <p style="font-weight:bold">Interessierte Produkte</p>
-           <p>${req.body.products}</p>
+            <p>${req.body.products}</p>
+
+           ${req.body.briefkasten == 'ja'? 'Der Interessente ist an einem Briefkasten interessiert':''}
            `
       ;
 
@@ -78,7 +82,8 @@ app.post('/', (req, res) => {
             `
               Sehr ${req.body.gender === 'Frau'? 'geehrte' : 'geehrter'} ${req.body.gender} ${req.body.lastName},</br>
               vielen Dank für Ihre Anfrage.</br></br>
-              Nach Durchsicht der Unterlagen werden wir uns bei Ihnen melden.</br></br>
+              Nach Durchsicht der Unterlagen werden wir uns bei Ihnen melden.</br>
+              Im Anhang dieser E-Mail finden Sie die Ihre angefragte Produkte.</br></br>
               Viele Grüße</br></br>
 
               Metalltechnik Kuhn</br>
@@ -175,6 +180,10 @@ app.post('/', (req, res) => {
             })
         }
 
+        attachments.push({
+            path: `${__dirname}/Bestellungen.pdf`
+        })
+
       const mailOptions_owner = {
           from: "Anfrage von Metalltechnik Kuhn - Konfigurator <jewgeny@gmx.net>",
           to: process.env.USER_MAIL,
@@ -187,8 +196,13 @@ app.post('/', (req, res) => {
         from: "Anfrage von Metalltechnik Kuhn - Konfigurator <jewgeny@gmx.net>",
         to: req.body.email,
         subject: `Ihre Anfrage vom ${today}`,
-        html: emailData_user
-        //attachments: attachments
+        html: emailData_user,
+        attachments: [
+            {
+                path: `${__dirname}/Bestellungen.pdf`
+            }
+
+        ]
     }
 
     let mailOptions = [mailOptions_owner, mailOptions_user];
