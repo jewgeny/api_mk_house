@@ -12,7 +12,8 @@
     "i": "^0.3.6",
     "nodemailer": "^6.6.3",
     "nodemon": "^2.0.12",
-    "npm": "^7.21.0"
+    "npm": "^7.21.0",
+    "rimraf": "^3.0.2"
   },
   "scripts": {
     "dev": "nodemon server.js",
